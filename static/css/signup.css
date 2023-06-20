@@ -1,0 +1,27 @@
+body{
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    margin: 0px;
+    padding: 0px;
+}
+
+#google_login_btn{
+    background-color:#fff;
+    border:1px solid #dddddd;
+    width:250px;
+    border-radius: 5px;
+}
+
+#sign_up_btn{
+    background-color:#3a4862;
+    border:1px solid #dddddd;
+    width:250px;
+    border-radius: 5px;
+}
+
+.input_boxes{
+    margin-bottom: 7px;
+    border:1px solid #dddddd;
+    border-radius: 5px;
+    width:250px;
+}

@@ -1,0 +1,234 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    body{
+        background-color: #eeedef;
+        margin: 0px;
+        padding: 0px;
+        overflow-x: hidden;
+
+    }
+    
+
+    
+    /*desktop and tablet*/
+    @media only screen and (min-width: 761px) {
+        #mybookings{
+            margin-right: 55px;
+        }
+
+        #bottom_section{
+        margin-left: 10%;
+        margin-right: 10%;
+
+        }
+        .left_flight{
+            width: 48%;
+            float: left;
+        }
+        .right_flight{
+            width: 48%;
+            float: right;
+        }
+        .left_flight , .right_flight{
+            background: #fff;
+            padding:2% 4% 1% 4%;
+            border-radius: 5px;
+        }
+
+        .flight_names{
+            font-size: 12px;
+        }
+
+        .flight_number{
+            margin-top: -18px;
+        }
+
+        .flight_icon{
+            display: inline-block;
+            width: 20%;
+        }
+
+        .departure{
+            display: inline-block;
+            width:25%;
+        }
+
+        .departure p, .arrival p, .price p{
+            line-height: 10px;
+        }
+
+        
+        .arrival{
+            display: inline-block;
+            width: 25%;
+        }
+
+        .price{
+            display: inline-block;
+            width: 18%;
+         
+        }
+        .book_btn{
+            display: inline-block;
+            width: 3%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+    /* mobile phone*/
+    @media only screen and (max-width: 760px) {
+        #mybookings{
+            margin-right: 35px;
+        }
+        .user_inp{
+            margin-bottom: 15px;
+        }
+        #bottom_section{
+        margin-left: 40px;
+        margin-right: 40px;
+
+        }
+        .left_flight{
+            width: 100%;
+            
+        }
+        .right_flight{
+            width: 100%;
+           
+        }
+
+       
+        
+    }
+
+</style>
+<div style="background-color: #eeedef; ">
+    <div style="background-color: #fff;padding-top: 25px;padding-left: 35px; padding-right: 35px; width: 100%; padding-bottom: 40px;" id="top-bar">
+        <img src="{% static 'images/logo.png' %}" height="20px" width="120px">
+        <div style="float: right;" id="mybookings">
+            <a href="" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
+        </div>
+        
+        <div class="user_inputs" style="margin-top: 50px;" >
+            <div class="row">
+                <div class="col-md-2 col-sm-12 user_inp">
+                    <label for="source">Source</label>
+                    <select class="form-control" name="source" id="source">
+                        
+                        <option>AAA</option>
+                        <option>BBB</option>
+                        <option>CCC</option>
+                </select>
+                </div>
+                <div class="col-md-2  col-sm-12 user_inp">
+                    <label for="source">Destination</label>
+                    <select class="form-control" name="destination" id="destination">
+                        
+                        <option>AAA</option>
+                        <option>BBB</option>
+                        <option>CCC</option>
+                </select>
+                </div>
+                <div class="col-md-2 col-sm-12 user_inp">
+                    <label for="source">Seats</label>
+                    <input type="number" class="form-control" name="seats" id="seats"> 
+                </div>
+            
+                <div class="col-md-2 col-sm-12 user_inp">
+                    <label for="source">Departure Date</label>
+                    <input type="date" class="form-control" name="departure_date" id="departure"> 
+                </div>
+
+                <div class="col-md-2 col-sm-12 user_inp">
+                    <label for="source">Add Round Trip</label>
+                    <input type="date" class="form-control" name="return_date" id="return_date"> 
+                </div>
+                <div class="col-md-2  col-sm-12 user_inp">
+                    <label for="seat_type">Class</label>
+                    <select class="form-control" name="seat_type" id="seat_type">
+                        
+                        <option>AAA</option>
+                        <option>BBB</option>
+                        <option>CCC</option>
+                    </select>
+                </div>
+            
+            </div>
+        </div>
+       
+   
+    </div><!--end of top bar-->
+    
+    <div id="bottom_section" style="margin-top: 50px;">
+        
+            <div class="left_flight" style="position: relative;">
+                <div class="flight_icon">
+                    <img src="{% static 'images/indigo.png' %}" height="40px" width="40px">
+                    <div class="flight_names">
+                        <p>Air Indigo</p>
+                        <p class="flight_number">A3 HJ89</p>
+                    </div>
+                </div>
+                <div class="departure" style="height: 100%;">
+                    <p class="departure_code" >DEL</p>
+                    <p class="departure_time" style="font-weight:bold ;">19:30</p>
+                    <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">Delhi </p>
+                </div>
+                <div class="arrival">
+                    <p class="arrival_code">MBI</p>
+                    <p class="arrival_time" style="font-weight: bold;">20:00</p>
+                    <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;">Mumbai</p>
+                </div>
+                <div class="price">
+                    <p>Price</p>
+                    <p style="font-weight: bold;">Rs.30</p>
+                    <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+                </div>
+                <div class="book_btn">
+                    <a><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                </div>
+                
+            </div>
+           
+            <div class="right_flight" style="position: relative;">
+                <div class="flight_icon">
+                    <img src="{% static 'images/indigo.png' %}" height="40px" width="40px">
+                    <div class="flight_names">
+                    <p>Air Indigo</p>
+                    <p class="flight_number">A3 HJ89</p>
+                    </div>
+                    
+                </div>
+                <div class="departure" style="height: 100%;">
+                    <p class="departure_code" >DEL</p>
+                    <p class="departure_time" style="font-weight:bold ;">19:30</p>
+                    <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">Delhi </p>
+                </div>
+                <div class="arrival">
+                    <p class="arrival_code">MBI</p>
+                    <p class="arrival_time" style="font-weight: bold;">20:00</p>
+                    <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;">Mumbai</p>
+                </div>
+                <div class="price">
+                    <p>Price</p>
+                    <p style="font-weight: bold;">Rs.30</p>
+                    <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+                </div>
+                <div class="book_btn">
+                    <a><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                </div>
+                
+            </div>
+        
+        
+    </div>
+</div>
+<div>
+    
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,96 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<style>
+    html{
+        height: 100%;
+        width: 100%;
+    }
+    body{
+       
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+        background:#f9f9f9;
+/*prev f4f4f4 */
+        overflow-x: hidden;
+       font-family: 'Poppins', sans-serif;;
+    }
+    label{
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    input{
+        font-size: 20px;
+    }
+
+
+    @media only screen and (min-width: 761px) {
+        #form_div{
+           margin: 20px 20px 7px 20px;
+           
+        }
+
+        #inner_form_section{
+           
+            background: #fff;
+          
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 10px 30px rgba(0,0,0,.05);
+          
+
+        }
+    }
+    
+    input{
+        margin-bottom: 25px;
+    }
+</style>
+
+    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 0px;">
+        <div style="width: 400px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-60%);">
+            <div style="text-align: center;">
+                <p style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;margin-top: 20px;margin-bottom: 20px;letter-spacing: 2px;">SKYGRAB</p>
+
+            </div>
+            <div id="inner_form_section" style="padding-top: 20px">
+                    
+                    <div style="text-align: center;">
+                       <img src="{% static 'icons/airplane.png' %}" height="20px" width="20px" style="margin-bottom: 5px;"> <p style="font-size: 18px;font-weight: bold;display: inline;">&nbsp; Let's on board!</p>
+                    </div>
+                    <div id="form_div" >
+                        <form method="POST" action="" id="main_form" >
+                            {% csrf_token %}
+                            <label for="first_name">First Name</label>
+                            <input name="first_name" type="text" class="form-control" required id="first_name" placeholder="Enter your first name" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+
+                            <label for="last_name">Last Name</label>
+                            <input name="last_name" type="text" class="form-control" required id="last_name" placeholder="Enter your last name" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+
+                            <label for="phone_number">Phone Number</label>
+                            <input name="phone_number" type="number" class="form-control" required id="phone_number" placeholder="Enter your phone number" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                                <div style="text-align: center;align-items: center;">
+                                    <button class="btn btn-primary" >Submit</button>
+
+                                </div>
+                          
+                            
+
+                        </form>
+                       
+                    </div><br>
+                    
+                    
+                    
+            </div>
+           
+            
+
+            
+            
+        </div>
+        
+    </div>
+{% endblock content %}

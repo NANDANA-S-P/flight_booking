@@ -1,11 +1,14 @@
-from django.shortcuts import render
-
+from django.shortcuts import render,redirect
+from users.models import Profile
 # Create your views here.
+
 def flights(request):
     if request.user.is_authenticated:
-        if request.user.is_verified:
+        profile_obj=Profile.objects.filter(user=request.user)
+        if profile_obj:
             return render(request,"flights/flights.html")
         else:
-            #get details
-            pass
-    return render(request,"flights/flights.html")
+            return redirect("details")
+    else:
+        return redirect("login")
+    

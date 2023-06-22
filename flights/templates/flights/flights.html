@@ -15,7 +15,10 @@
     /*desktop and tablet*/
     @media only screen and (min-width: 761px) {
         #mybookings{
-            margin-right: 55px;
+            margin-right: 25px;
+        }
+        #logout{
+            margin-right: 30px;
         }
 
         #bottom_section{
@@ -108,9 +111,15 @@
 <div style="background-color: #eeedef; ">
     <div style="background-color: #fff;padding-top: 25px;padding-left: 35px; padding-right: 35px; width: 100%; padding-bottom: 40px;" id="top-bar">
         <img src="{% static 'images/logo.png' %}" height="20px" width="120px">
-        <div style="float: right;" id="mybookings">
-            <a href="" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
+        <div style="float: right;" >
+            <div id="mybookings" style="display: inline-block;">
+                <a href="" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
+            </div>
+            <div id="logout" style="display: inline-block;">
+                <a href="{% url 'logout' %}" style="text-decoration: none; color: #000;font-weight: 500;">Logout</a>
+            </div>
         </div>
+        
         
         <div class="user_inputs" style="margin-top: 50px;" >
             <div class="row">

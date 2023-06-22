@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #custom apps
     'users',
     'flights',
+    'dashboard',
 
     #installed
     'sweetify',
@@ -138,7 +139,6 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.CustomUser'
 
 SOCIAL_AUTH_LOGIN_URL = '/users/signup/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
@@ -151,3 +151,7 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '281006951330-h678qps8lpbsqv0qteqirap7dkbdag91.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'

@@ -1,0 +1,136 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+<style>
+    input ,select{
+        margin-bottom: 25px;
+    }
+    .dataTables_info {
+        font-size: 12px;
+    }
+    .page-link{
+        font-size: 12px;
+    }
+    
+
+</style>
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;">
+    <p style="font-size: 22px; font-weight: bold;font-family: 'Montserrat', sans-serif;">Flights</p>
+
+    <form method="POST" style="margin-bottom: 10px;">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="plane_number">PLANE NUMBER</label>
+                <input name="plane_number" id="plane_number" placeholder="Enter Plane number" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required>
+            </div>
+        
+                <div class="col-md-6">
+                <label for="airlines">AIRLINES</label>
+                <select name="airlines" id="airlines" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;font-size: 14px;" required>
+                <option disabled selected>----</option>
+                {% for airline in airlines %}
+                    <option value="{{ airline.id }}">{{ airline.name }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+        </div>
+       <div class="row">
+        <div class="col-md-6">
+            <label for="source">SOURCE</label>
+            <select name="source" id="source" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required>
+                <option disabled selected>----</option>
+                {% for place in places %}
+                <option value="{{ place.id }}">{{ place.code }} - {{ place.location }}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <div class="col-md-6">
+            <label for="plane_number">DESTINATION</label>
+            <select name="destination" id="destination" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required>
+                <option disabled selected>----</option>
+                
+                {% for place in places %}
+                <option value="{{ place.id }}">{{ place.code }} - {{ place.location }}</option>
+                {% endfor %}
+            </select>   
+            </div>
+       </div>
+       <div class="row">
+            <div class="col-md-6">     
+                <label for="departure">DEPARTURE</label>
+                <input name="departure" id="departure" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required type="datetime-local">
+            </div>
+            <div class="col-md-6">
+                <label for="arrival">ARRIVAL</label>
+                <input name="arrival" id="arrival" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required type="datetime-local">
+            </div>
+       </div>
+
+       
+        <div >     
+            <label for="first">FIRST CLASS FARE</label>
+            <input name="first" id="first" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required placeholder="Enter first class fare">
+        </div>
+        <div>     
+            <label for="business">BUSINESS CLASS FARE</label>
+            <input name="business" id="business" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required placeholder="Enter business class fare">
+        </div>
+        <div>     
+            <label for="economy">ECONOMY CLASS FARE</label>
+            <input name="economy" id="economy" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required placeholder="Enter economy class fare">
+        </div>
+        <div class="form-group form-check" >
+        <input type="checkbox" class="form-check-input" name="bookings_open" id="bookings_open" checked style="font-size: 16px;">
+        <label class="form-check-label" for="bookings_open">Open bookings</label>
+            </div>
+  
+        
+        <button class="btn btn-primary" style="margin-top: 20px;">Submit</button>
+    </form>
+    
+</div>
+
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;margin-top: 20px;">
+    <p style="font-size: 20px; font-weight: bold;font-family: 'Montserrat', sans-serif">List of Flights</p>
+    <div>
+        <table id="airlinetable" class="table table-bordered" >
+            <thead>
+                <tr>
+                  <th scope="col">No</th>
+                 
+                  <th scope="col">Code</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Added by</th>
+                  <th scopr="col">Added at</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for airport in airports %}
+               <tr style="color: red !important;">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ airport.code }}</td>
+                    <td>{{ airport.location }}</td>
+                    <td>{{ airport.added_by }}</td>
+                    <td>{{ airport.added_at }}</td>
+               </tr>
+        
+                {% endfor %}
+              </tbody>
+             
+            </table>
+      
+    </div>
+
+    
+</div>
+ <!--jquery-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    
+    let table = new DataTable('#airlinetable');
+</script>
+
+{% endblock content %}

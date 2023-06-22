@@ -1,0 +1,76 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+<style>
+    input{
+        margin-bottom: 25px;
+    }
+    .dataTables_info {
+        font-size: 12px;
+    }
+    .page-link{
+        font-size: 12px;
+    }
+    
+
+</style>
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;">
+    <p style="font-size: 22px; font-weight: bold;font-family: 'Montserrat', sans-serif;">Airports</p>
+
+    <form method="POST" style="margin-bottom: 10px;">
+        {% csrf_token %}
+        <label for="code">CODE</label>
+        <input name="code" id="code" placeholder="Code of the airport" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;" required>
+       
+        <label for="location">LOCATION</label>
+        <input name="location" id="location" placeholder="Location" class="form-control" style="box-shadow: 0 2px 4px rgba(25,34,29,.05);font-size: 14px;font-size: 14px;" required>
+
+       
+        <button class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;margin-top: 20px;">
+    <p style="font-size: 20px; font-weight: bold;font-family: 'Montserrat', sans-serif">List of Airports</p>
+    <div>
+        <table id="airlinetable" class="table table-bordered" >
+            <thead>
+                <tr>
+                  <th scope="col">No</th>
+                 
+                  <th scope="col">Code</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Added by</th>
+                  <th scopr="col">Added at</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for airport in airports %}
+               <tr style="color: red !important;">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ airport.code }}</td>
+                    <td>{{ airport.location }}</td>
+                    <td>{{ airport.added_by }}</td>
+                    <td>{{ airport.added_at }}</td>
+               </tr>
+        
+                {% endfor %}
+              </tbody>
+             
+            </table>
+      
+    </div>
+
+    
+</div>
+ <!--jquery-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    
+    let table = new DataTable('#airlinetable');
+</script>
+
+{% endblock content %}

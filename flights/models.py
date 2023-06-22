@@ -1,10 +1,12 @@
 from django.db import models
-from users.models import CustomUser
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Airport(models.Model):
     code=models.CharField(max_length=20)
     location=models.CharField(max_length=200)
+    added_by=models.ForeignKey(User,related_name="added_airports",null=True,on_delete=models.SET_NULL)
+    added_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.code
@@ -12,6 +14,8 @@ class Airport(models.Model):
 class Airline(models.Model):
     name=models.CharField(max_length=100)
     logo=models.ImageField(upload_to="airline_logo/")
+    added_by=models.ForeignKey(User,related_name="added_airlines",null=True,on_delete=models.SET_NULL)
+    added_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -25,6 +29,8 @@ class Flight(models.Model):
     departure=models.DateTimeField()
     arrival=models.DateTimeField()
     is_booking_open=models.BooleanField()
+    added_by=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,related_name="added_flights")
+    added_at=models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
@@ -40,17 +46,21 @@ class SeatType(models.Model):
     fare=models.FloatField()
 
     def __str__(self):
-        return f"{self.type}-{self.plane_number}"
+        return f"{self.type}-{self.flight.plane_number}"
 
 class Seat(models.Model):
+    AVAILABLE=0
+    BOOKED=1
+    STATUS_CHOICES=((AVAILABLE,"Available"),(BOOKED,"Booked"))
     code=models.CharField(max_length=20)
     type=models.ForeignKey(SeatType,on_delete=models.CASCADE,related_name="associated_seats")
+    status =models.IntegerField(choices=STATUS_CHOICES,default=0)
 
     def __str__(self):
         return self.code
     
 class Booking(models.Model):
-    customer=models.ForeignKey(CustomUser,on_delete=models.CASCADE,related_name="associated_bookings")
+    customer=models.ForeignKey(User,on_delete=models.CASCADE,related_name="associated_bookings")
     date_time=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

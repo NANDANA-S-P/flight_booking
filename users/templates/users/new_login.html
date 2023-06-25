@@ -66,7 +66,7 @@
                         <hr style="width:40%;text-align:left;margin-left:0;display: inline-block;">
                         <pre style="color: #dddddd;position: absolute;display: inline-block">OR</pre>
                         <hr style="width:40%;display: inline-block;margin-left: 20px;">
-        
+
                     </div>
                     <div id="form_div" >
                         <form method="POST" action="" id="main_form" >
@@ -77,20 +77,24 @@
                             <label for="password" id="password_label" class="login_fields">PASSWORD</label>
                             <input name="password" type="password" class="form-control login_fields" id="password" placeholder="Enter your password" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
                             
-                            <label for="password1" style="display: none;">PASSWORD</label>
-                            <input name="password1" class="form-control" id="password1" placeholder="Enter password" style="display: none; font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
-                            
-                            <label for="password2" style="display: none;">CONFIRM PASSWORD</label>
-                            <input name="password2" class="form-control" id="password1" placeholder="Confirm password" style="display: none; font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
-                            
+                            <div class="signup_fields" style="display: none;">
+                                <label for="password1 " >PASSWORD</label>
+                                <input name="password1" class="form-control" id="password1" placeholder="Enter password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                                
+                                <label for="password2" >CONFIRM PASSWORD</label>
+                                <input name="password2" class="form-control" id="password1" placeholder="Confirm password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                                
+                            </div>
+                           
                             <label for="otp" id="otp_label" style="display: none;" >OTP</label>
                             <input name="otp" type="number" class="form-control" id="otp" placeholder="Enter code here" style="display: none; font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
 
                             <button class="btn btn-primary login_fields" name="login_button" id="login_button" style="width: 180px;" type="submit">Login</button>
                             <p style="width: 180px;display: inline;font-size: 13px;margin-left: 10px;" id="forgot_password" class="login_fields"><a>Forgot password?</a></p>
 
-                            <button class="btn btn-primary signup_fields" id="otp_button" name="otp_button"  style="display: none;" onclick="send_otp(event)">Send OTP</button>
-                            <button class="btn btn-primary" id="verify_otp_button" name="verify_otp_button"  style="display: none;">Verify OTP</button>
+                            <!-- <button class="btn btn-primary " id="otp_button" name="otp_button"  style="display: none;" onclick="send_otp(event)">Send OTP</button> -->
+                            <button class="btn btn-primary signup_fields " id="register_button" name="register_button"  style="display: none;" >Register</button>
+                            <!-- <button class="btn btn-primary" id="verify_otp_button" name="verify_otp_button"  style="display: none;">Verify OTP</button> -->
                             
 
                         </form>
@@ -120,6 +124,11 @@
 <!--swal-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    window.addEventListener("load", (event) => {
+        if("{{ is_register }}")
+        toggle_signup()
+    });
+
     function toggle_login(){
         // document.getElementById("otp_label").style.display='none';
         // document.getElementById("otp_button").style.display='none';
@@ -153,16 +162,17 @@
 
     
 
-   async function send_otp(e,email){
+   async function send_otp(e){
+    e.preventDefault();
     var email=document.getElementById("email").value
     const response = await fetch(`/users/send_otp/${email}`);
     // const json_response = await response.json();
     console.log(response)
     if(response.status=="200"){
-        document.getElementById("otp").style.display=block;
-        document.getElementById("otp_label").style.display=block;
-        document.getElementById("verify_otp_button").style.display=block;
-        document.getElementById("otp_button").style.display=none;
+        document.getElementById("otp").style.display='block';
+        document.getElementById("otp_label").style.display='block';
+        document.getElementById("verify_otp_button").style.display='block';
+        document.getElementById("otp_button").style.display='none';
 
     }
 

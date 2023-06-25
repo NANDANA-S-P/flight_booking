@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'pay_test' %}" method="POST">
+        {% csrf_token %}
+        <input value="{{ booking_id }}" name="booking_id">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Payment Gateway" data-amount="1" data-locale="auto" data-book="{{ booking_id }}"></script>
+
+    </form>
+</body>
+
+</html>

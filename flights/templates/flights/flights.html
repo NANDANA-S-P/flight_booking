@@ -27,17 +27,21 @@
 
         }
         .left_flight{
-            width: 48%;
+            
             float: left;
+            
         }
         .right_flight{
-            width: 48%;
+           
             float: right;
+            
         }
         .left_flight , .right_flight{
+            width: 48%;
             background: #fff;
             padding:2% 4% 1% 4%;
             border-radius: 5px;
+            margin: 20px 0px 20px 0px;
         }
 
         .flight_names{
@@ -74,8 +78,9 @@
          
         }
         .book_btn{
+            margin-left: 2%;
             display: inline-block;
-            width: 3%;
+            width: 5%;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -125,25 +130,26 @@
             <div class="row">
                 <div class="col-md-2 col-sm-12 user_inp">
                     <label for="source">Source</label>
-                    <select class="form-control" name="source" id="source">
-                        
-                        <option>AAA</option>
-                        <option>BBB</option>
-                        <option>CCC</option>
+                    <select class="form-control" name="source" id="source" oninput="filter_display()">
+                        <option value="default">----</option>
+                        {% for airport in airports %}
+                        <option value="{{ airport.code }}">{{ airport.code }} - {{ airport.location }}</option>
+                        {% endfor %}
                 </select>
                 </div>
                 <div class="col-md-2  col-sm-12 user_inp">
                     <label for="source">Destination</label>
-                    <select class="form-control" name="destination" id="destination">
+                    <select class="form-control" name="destination" id="destination" oninput="filter_display()">
                         
-                        <option>AAA</option>
-                        <option>BBB</option>
-                        <option>CCC</option>
+                        <option value="default">----</option>
+                        {% for airport in airports %}
+                        <option value="{{ airport.code }}">{{ airport.code }} - {{ airport.location }}</option>
+                        {% endfor %}
                 </select>
                 </div>
                 <div class="col-md-2 col-sm-12 user_inp">
                     <label for="source">Seats</label>
-                    <input type="number" class="form-control" name="seats" id="seats"> 
+                    <input type="number" class="form-control" name="seats" id="seats" value="1"  oninput="filter_display()"> 
                 </div>
             
                 <div class="col-md-2 col-sm-12 user_inp">
@@ -155,7 +161,7 @@
                     <label for="source">Add Round Trip</label>
                     <input type="date" class="form-control" name="return_date" id="return_date"> 
                 </div>
-                <div class="col-md-2  col-sm-12 user_inp">
+                <!-- <div class="col-md-2  col-sm-12 user_inp">
                     <label for="seat_type">Class</label>
                     <select class="form-control" name="seat_type" id="seat_type">
                         
@@ -163,7 +169,7 @@
                         <option>BBB</option>
                         <option>CCC</option>
                     </select>
-                </div>
+                </div> -->
             
             </div>
         </div>
@@ -172,65 +178,88 @@
     </div><!--end of top bar-->
     
     <div id="bottom_section" style="margin-top: 50px;">
+        {% for flight in flights %}
+        {% if not forloop.counter|divisibleby:2  %}
+        <div class="left_flight flight_info" style="position: relative;display: none;" data-src="{{ flight.flight_det.source.code }}" data-dst="{{ flight.flight_det.destination.code }}"
+         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure }}" data-arrival="{{ flight.flight_det.arrival }}">
+            <div class="flight_icon">
+                <img src="{{ flight.flight_det.airlines.logo.url }}" height="40px" width="40px">
+                <div class="flight_names">
+                    <p>{{ flight.flight_det.airlines.name }}</p>
+                    <p class="flight_number">{{ flight.flight_det.plane_number }}</p>
+                </div>
+            </div>
+            <div class="departure" style="height: 100%;text-align: center;">
+                <p class="departure_code" style="color: #828282;font-size: 11px;text-transform: uppercase;" >{{ flight.flight_det.departure.date }}</p>
+                <p class="departure_time" style="font-weight:bold ;">{{ flight.flight_det.departure.time }}</p>
+                <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">{{ flight.flight_det.source.location }}</p>
+            </div>
+            <div class="arrival" style="text-align: center;">
+                <p class="arrival_code" style="color: #828282;font-size: 11px;text-transform: uppercase;" >{{ flight.flight_det.arrival.date }}</p>
+                <p class="arrival_time" style="font-weight: bold;">{{ flight.flight_det.arrival.time }}</p>
+                <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;"> {{ flight.flight_det.destination.location }}</p>
+            </div>
+            <div class="price" style="text-align: center;">
+                <p style="color: #828282;font-size: 11px;text-transform: uppercase;">Price</p>
+                <p style="font-weight: bold;">Rs.{{ flight.flight_det.fare }}</p>
+                <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+            </div>
+            <div class="book_btn">
+                <form id="form_{{ forloop.counter }}" method="POST" action="{% url 'book' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ flight.flight_det.id }}" style="display: none;" name="flight_id">
+                   
+                    <input type="hidden" style="display: none;" id="f_seats_{{ forloop.counter }}" name="f_seats">
+                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                </form>
+               
+            </div>
+            
+        </div>
+        {% else %}
+                   
+        <div class="right_flight flight_info" style="position: relative;display: none;"   data-src="{{ flight.flight_det.source.code }}" data-dst="{{ flight.flight_det.destination.code }}"
+         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure }}" data-arrival="{{ flight.flight_det.arrival }}">
+            <div class="flight_icon">
+                <img src="{{ flight.flight_det.airlines.logo.url }}" height="40px" width="40px">
+                <div class="flight_names">
+                    <p>{{ flight.flight_det.airlines.name }}</p>
+                    <p class="flight_number">{{ flight.flight_det.plane_number }}</p>
+                </div>
+                
+            </div>
+            <div class="departure" style="height: 100%;text-align: center;">
+                <p class="departure_code" style="color: #828282;font-size: 11px;text-transform: uppercase;" >{{ flight.flight_det.departure.date }}</p>
+                <p class="departure_time" style="font-weight:bold ;">{{ flight.flight_det.departure.time }}</p>
+                <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">{{ flight.flight_det.source.location }}</p>
+            </div>
+            <div class="arrival" style="text-align: center;">
+                <p class="arrival_code" style="color: #828282;font-size: 11px;text-transform: uppercase;" >{{ flight.flight_det.arrival.date }}</p>
+                <p class="arrival_time" style="font-weight: bold;">{{ flight.flight_det.arrival.time }}</p>
+                <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;"> {{ flight.flight_det.destination.location }}</p>
+            </div>
+            <div class="price" style="text-align: center;">
+                <p style="color: #828282;font-size: 11px;text-transform: uppercase;">Price</p>
+                <p style="font-weight: bold;">Rs.{{ flight.flight_det.fare }}</p>
+                <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+            </div>
+            <div class="book_btn" style="text-align: center;">
+                <form id="form_{{ forloop.counter }}" method="POST" action="{% url 'book' %}">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ flight.flight_det.id }}" style="display: none;" name="flight_id">
+                   
+                    <input type="hidden" style="display: none;" id="f_seats_{{ forloop.counter }}" name="f_seats">
+                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                </form>
+            </div>
+            
+        </div>
+        {% endif %}
+        {% endfor %}
         
-            <div class="left_flight" style="position: relative;">
-                <div class="flight_icon">
-                    <img src="{% static 'images/indigo.png' %}" height="40px" width="40px">
-                    <div class="flight_names">
-                        <p>Air Indigo</p>
-                        <p class="flight_number">A3 HJ89</p>
-                    </div>
-                </div>
-                <div class="departure" style="height: 100%;">
-                    <p class="departure_code" >DEL</p>
-                    <p class="departure_time" style="font-weight:bold ;">19:30</p>
-                    <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">Delhi </p>
-                </div>
-                <div class="arrival">
-                    <p class="arrival_code">MBI</p>
-                    <p class="arrival_time" style="font-weight: bold;">20:00</p>
-                    <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;">Mumbai</p>
-                </div>
-                <div class="price">
-                    <p>Price</p>
-                    <p style="font-weight: bold;">Rs.30</p>
-                    <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
-                </div>
-                <div class="book_btn">
-                    <a><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
-                </div>
-                
-            </div>
-           
-            <div class="right_flight" style="position: relative;">
-                <div class="flight_icon">
-                    <img src="{% static 'images/indigo.png' %}" height="40px" width="40px">
-                    <div class="flight_names">
-                    <p>Air Indigo</p>
-                    <p class="flight_number">A3 HJ89</p>
-                    </div>
-                    
-                </div>
-                <div class="departure" style="height: 100%;">
-                    <p class="departure_code" >DEL</p>
-                    <p class="departure_time" style="font-weight:bold ;">19:30</p>
-                    <p class="departure_loc" style="color: #b1b1b1;font-size: 12px;">Delhi </p>
-                </div>
-                <div class="arrival">
-                    <p class="arrival_code">MBI</p>
-                    <p class="arrival_time" style="font-weight: bold;">20:00</p>
-                    <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;">Mumbai</p>
-                </div>
-                <div class="price">
-                    <p>Price</p>
-                    <p style="font-weight: bold;">Rs.30</p>
-                    <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
-                </div>
-                <div class="book_btn">
-                    <a><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
-                </div>
-                
-            </div>
+
+
+
         
         
     </div>
@@ -238,6 +267,68 @@
 <div>
     
 </div>
+<script>
+    window.addEventListener("load", (event) => {
+        // filter_flights("{{ req_flight_obj.source }}","{{ req_flight_obj.destination }}","{{ req_flight_obj.seats }}")
+        filter_flights("default","default","1")
+    });
+
+    function filter_display(){
+        console.log("exec filter display")
+        source=document.getElementById("source").value
+        destination=document.getElementById("destination").value
+        seats=document.getElementById("seats").value
+        filter_flights(source,destination,seats)
+    }
+    var toggler=0;
+    function filter_flights(source,destination,seats){
+        console.log("exec filter flight")
+        flight_infos=document.getElementsByClassName('flight_info');
+        for(var i=0;i<flight_infos.length;i++){
+            flight_infos[i].style.display='none';
+        }
+        toggler=0
+        for(var i=0;i<flight_infos.length;i++){
+            // console.log("selected ",source)
+            // console.log("destination ",destination)
+            console.log(flight_infos[i].getAttribute('data-departure')+"--"+seats);
+            // console.log(flight_infos[i].getAttribute('data-dst')+"--"+destination);
+            if(flight_infos[i].getAttribute('data-src')==source || (source=="default")){
+                if(flight_infos[i].getAttribute('data-dst')==destination || (destination=="default")){
+                    if(flight_infos[i].getAttribute('data-avl')>=seats || seats=="1"){
+                        if(toggler%2==0){
+                            flight_infos[i].classList.remove("right_flight")
+                            flight_infos[i].classList.add("left_flight")
+                            flight_infos[i].style.display='block';
+                            toggler+=1;
+                        }
+                        else{
+                            flight_infos[i].classList.remove("left_flight")
+                            flight_infos[i].classList.add("right_flight")
+                            flight_infos[i].style.display='block';
+                            toggler+=1;
+                        }
+                    }
+                
+                 }
+            }
+
+        }
+
+    }
+</script>
+<script>
+    function submit_form(form_counter){
+        console.log(document.getElementById("seats").value)
+        required_form_id=`form_${form_counter}`
+        seats=document.getElementById("seats").value
+        seats_id=`f_seats_${form_counter}`
+        console.log("finding "+seats_id)
+        document.getElementById(seats_id).value=seats
+        required_form=document.getElementById(required_form_id)
+        required_form.submit();
+    }
+</script>
 
 
 {% endblock content %}

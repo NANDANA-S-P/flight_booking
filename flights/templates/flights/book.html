@@ -1,0 +1,161 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<style>
+    html{
+        height: 100%;
+        width: 100%;
+    }
+    body{
+       
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+        background:#f9f9f9;
+/*prev f4f4f4 */
+        overflow-x: hidden;
+       font-family: 'Poppins', sans-serif;;
+    }
+    label{
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    input{
+        font-size: 20px;
+    }
+
+
+    @media only screen and (min-width: 761px) {
+        #form_div{
+           margin: 20px 20px 7px 20px;
+           
+        }
+
+        #inner_form_section{
+           
+            background: #fff;
+          
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 10px 30px rgba(0,0,0,.05);
+          
+
+        }
+    }
+    
+    input{
+        margin-bottom: 25px;
+    }
+</style>
+
+    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 0px;">
+        <div style="width: 60%;position: absolute;left: 50%;transform: translateX(-50%);margin-top: 5%;">
+          
+          
+            <div id="inner_form_section" style="padding-top: 20px">
+                    <!-- <div style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;letter-spacing: 2px;display: inline-block;">SKYGRAB</div> -->
+                    <div style="text-align: center;">
+                       <img src="{% static 'icons/airplane.png' %}" height="20px" width="20px" style="margin-bottom: 5px;"> <p style="font-size: 16px;font-weight: bold;display: inline;">&nbsp; Buckle up to soar high!</p>
+                    </div>
+                    <div id="form_div" >
+                        <form method="POST" action="{% url 'confirm_booking' %}" id="main_form" >
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="source">Source </label>
+                                    <input name="source" id="source" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.source.location }}" readonly>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="destination">Destination </label>
+                                <input name="destination" id="destination" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.destination.location }}" readonly>
+                            
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="departure">Departure </label>
+                                    <input name="departure" id="departure" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.departure }}" readonly>
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="arrival">Arrival </label>
+                                    <input name="arrival" id="arrival" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.arrival }}" readonly>
+        
+                                </div>
+                            </div>
+                            
+                           <div class="row">
+                            <div class="col-md-6">
+                                <label for="seats">No. of Seats </label>
+                           
+                                <input name="seats" id="seats" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ seats }}" readonly>
+    
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fare">Fare </label>
+                            <input name="fare" id="fare" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="Rs. {{ fare }}" readonly>
+
+
+                            </div>
+                           </div>
+                           
+                           {% for i in passengers %}
+                           <div class="row">
+                              <div class="col-md-6">
+                                <label for="first_name_{{ i }}">Passenger {{ i }}</label>
+                                <input required name="first_name_{{ i }}" id="first_name_{{ i }}" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" placeholder="Enter first name" >
+                              </div>
+                              <div class="col-md-6">
+                                <label for="last_name_{{ i }}"></label>
+                                <input required name="last_name_{{ i }}" class="form-control" id="last_name_{{ i }}" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" placeholder="Enter last name" >
+                              </div>
+                           </div>
+                           <div class="row">
+                            <div class="col-md-6">
+                              <input required name="age_{{ i }}" id="age" type="number" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" placeholder="Enter your age" >
+                            </div>
+                            <div class="col-md-6">
+                              <select required name="gender_{{ i }}" class="form-control" id="last_name_{{ i }}" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);color: #636363;"  >
+                                <option disabled selected >Select your gender</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                                <option value="3"> Others</option>
+                            </select>
+                            </div>
+                         </div>
+                           {% endfor %}
+                               
+                            
+                            
+                           
+                            <input name="flight_id" id="flight_id" type="hidden" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.id }}" readonly>
+
+
+                                <div style="text-align: center;align-items: center;">
+                                    <button class="btn btn-primary"  name="confirm_btn">Confirm and Pay</button>
+                                    <p style="font-size: 10px;margin-top: 4px;">MAKE PAYMENT TO CONFIRM YOUR SEATS</p>
+                                </div>
+                          
+                            
+
+                        </form>
+                       
+                    </div><br>
+                    
+                    
+                    
+            </div>
+           
+            
+
+            
+            
+        </div>
+        
+    </div>
+{% endblock content %}

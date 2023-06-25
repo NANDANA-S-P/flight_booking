@@ -31,37 +31,43 @@ class Flight(models.Model):
     is_booking_open=models.BooleanField()
     added_by=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,related_name="added_flights")
     added_at=models.DateTimeField(auto_now_add=True)
+    fare=models.IntegerField()
 
 
     def __str__(self):
         return f"{self.plane_number}-{self.source.code}-{self.destination.code}"
 
-class SeatType(models.Model):
-    FIRST=1
-    BUSINESS=2
-    ECONOMY=3
-    SEAT_TYPE=((FIRST,"First"),(BUSINESS,"Business"),(ECONOMY,"Economy"))
-    flight=models.ForeignKey(Flight,on_delete=models.CASCADE,related_name="flight_seats")
-    type=models.SmallIntegerField(choices=SEAT_TYPE)
-    fare=models.FloatField()
+# class SeatType(models.Model):
+#     FIRST=1
+#     BUSINESS=2
+#     ECONOMY=3
+#     SEAT_TYPE=((FIRST,"First"),(BUSINESS,"Business"),(ECONOMY,"Economy"))
+#     flight=models.ForeignKey(Flight,on_delete=models.CASCADE,related_name="flight_seats")
+#     type=models.SmallIntegerField(choices=SEAT_TYPE)
+#     fare=models.IntegerField()
 
-    def __str__(self):
-        return f"{self.type}-{self.flight.plane_number}"
+#     def __str__(self):
+#         return f"{self.type}-{self.flight.plane_number}"
 
 class Seat(models.Model):
     AVAILABLE=0
     BOOKED=1
     STATUS_CHOICES=((AVAILABLE,"Available"),(BOOKED,"Booked"))
     code=models.CharField(max_length=20)
-    type=models.ForeignKey(SeatType,on_delete=models.CASCADE,related_name="associated_seats")
+    flight=models.ForeignKey(Flight,on_delete=models.CASCADE,related_name="associated_seats")
     status =models.IntegerField(choices=STATUS_CHOICES,default=0)
 
     def __str__(self):
         return self.code
     
 class Booking(models.Model):
+    INITIATED=0
+    PAID=1
+    STATUS_CHOICES=((INITIATED,"Initiated"),(PAID,"Paid"))
     customer=models.ForeignKey(User,on_delete=models.CASCADE,related_name="associated_bookings")
     date_time=models.DateTimeField(auto_now_add=True)
+    status=models.IntegerField(choices=STATUS_CHOICES)
+    flight=models.ForeignKey(Flight,on_delete=models.SET_NULL,null=True,related_name="related_bookings")
 
     def __str__(self):
         return f"{self.customer.email}-{self.seat_id}"
@@ -69,7 +75,8 @@ class Booking(models.Model):
 class Passenger(models.Model):
     MALE=1
     FEMALE=2
-    GENDER_CHOICES=((MALE,"Male"),(FEMALE,"Female"))
+    OTHERS=3
+    GENDER_CHOICES=((MALE,"Male"),(FEMALE,"Female"),(OTHERS,"Others"))
     first_name=models.CharField(max_length=200)
     last_name=models.CharField(max_length=200)
     gender=models.SmallIntegerField(choices=GENDER_CHOICES)

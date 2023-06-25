@@ -1,109 +1,103 @@
+{% extends "users/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-   
-    <!--fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <!--bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
-    <!--custom css-->
-    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% block content %}
+<style>
+    html{
+        height: 100%;
+        width: 100%;
+    }
+    body{
+       
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+        background:#f9f9f9;
+/*prev f4f4f4 */
+        overflow-x: hidden;
+       font-family: 'Poppins', sans-serif;;
+    }
+    label{
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    input{
+        font-size: 20px;
+    }
 
-    <!--jquery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    @media only screen and (min-width: 761px) {
+        #form_div{
+           margin: 20px 20px 7px 20px;
+           
+        }
 
-</head>
-<body>
-    <div class="row">
-        <div class="col-md-6 col-sm-12" style="position: relative;">
-            <p style="font-size: 10px;font-weight: 600;color: #000;">GRAB</p>
-            <div style="position: absolute;left: 50%;top:100px;transform: translateX(-50%);">
-            <h4>Create your account</h4>
-            <br>
-            <button id="google_login_btn">Login with Google</button>
-            <br><br>
-            <div style="position: relative;">
-                <hr style="width:110px;text-align:left;margin-left:0;display: inline-block;">
-                <span style="color: #dddddd;position: absolute;">or</span>
-                <hr style="width:110px;display: inline-block;margin-left: 20px;">
+        #inner_form_section{
+           
+            background: #fff;
+          
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 10px 30px rgba(0,0,0,.05);
+          
+
+        }
+    }
+    
+    input{
+        margin-bottom: 25px;
+    }
+</style>
+
+    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 0px;">
+        
+        <div style="width: 400px;position: absolute;left: 50%;transform: translate(-50%,15%);">
+            <div style="text-align: center;">
+                <p style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;margin-top: 40px;margin-bottom: 20px;letter-spacing: 2px;">SKYGRAB</p>
 
             </div>
-            <form method="POST" action="" id="main_form">
-                {% csrf_token %}
-                <label>Name</label><br>
-                <input name="name" type="text" class="input_boxes" required id="name"><br>
-                <label>Email</label><br>
-                <input name="email" type="email" class="input_boxes" required id="email"><br>
-                <label>Password</label><br>
-                <input name="password" type="password" class="input_boxes" required id="password"><br>
-                <label>Confirm Password</label><br>
-                <input name="confirm_password" type="password" class="input_boxes" required id="confirm_password">
-                <br><br>
-                <button id="sign_up_btn">Sign up</button>
+            <div id="inner_form_section" style="padding-top: 20px">
+     
 
+                    
+                    <div id="form_div" >
+                        <form method="POST" action="{% url 'details' %}" id="main_form" >
+                            {% csrf_token %}
+                            <label for="email">EMAIL</label>
+                            <input name="email" type="email" class="form-control"  id="email" value="{{ request.user.email }}" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);" disabled>
 
-            </form>
-            <p style="font-size: 12px;">Already have an account? Log in</p>
+                            <label for="otp">OTP</label>
+                            <input name="otp" type="number" class="form-control" id="otp" placeholder="Enter OTP" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                            
+                           
+                           <div style="text-align: center;">
+                            <button class="btn btn-primary" name="verify_btn">Verify</button>
+
+                            <a href="{% url 'verify' %}" style="text-decoration: none;display: block;margin-top: 25px;font-size: 14px;">Resend OTP</a>
+
+                           </div>
+                           
+                            
+
+                        </form>
+                        
+                    </div><br>
+                    
+                    
+                    
             </div>
            
-        </div>
-        <div class="col-md-6">
             
-djioj
+
+            
+            
         </div>
+        
     </div>
-</body>
+{% endblock content %}
+{% block script_references %}
 <!--swal-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-   document.getElementById("main_form").addEventListener("submit",(e)=>{
-        e.preventDefault();
-        console.log("heyyy")
-        let name=document.getElementById("name")
-        email=document.getElementById("email")
-        password=document.getElementById("password")
-        confirm_password=document.getElementById("confirm_password")
-        console.log(name,"............")
-        console.log(name.value)
-        if(name.value.trim()==""){
-            Swal.fire({title: 'Error!',text: 'Enter valid name!',icon: 'warning',confirmButtonText: 'OK'})
-        }
-        else if(email.value.trim()==""){
-            Swal.fire({title: 'Error!',text: 'Enter valid email!',icon: 'warning',confirmButtonText: 'OK'})
-        }
-        else if(password.value.length < 8) {
-
-            Swal.fire({title: 'Error!',text: 'Passwords should contain atleast 8 characters!',icon: 'warning',confirmButtonText: 'OK'})
-        }
-        else if( ( !(/[A-Z]/.test(password.value)) || !(/[a-z]/.test(password.value)) ||  !(/[0-9]/.test(password.value)) ||  !(/[!@#$%^&*()]/.test(password.value)))){
-            Swal.fire({title: 'Error!',text: 'Enter valid password!',icon: 'warning',confirmButtonText: 'OK'})
-
-        }
-        
-        else if(password.value!=confirm_password.value){
-            Swal.fire({title: 'Error!',text: 'Passwords do not match!',icon: 'warning',confirmButtonText: 'OK'})
-
-        }
-        else{
-            document.getElementById("main_form").submit();
-        }
-
-
-
-
-        
-   })
-    
+ 
 </script>
-{% load sweetify %}
-{% sweetify %}
-</html>
+{% endblock script_references%}

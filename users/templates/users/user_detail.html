@@ -49,8 +49,8 @@
     }
 </style>
 
-    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 0px;">
-        <div style="width: 400px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,-60%);">
+    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 40px; ">
+        <div style="width: 400px;position: absolute;left: 50%;transform: translateX(-50%);">
             <div style="text-align: center;">
                 <p style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;margin-top: 20px;margin-bottom: 20px;letter-spacing: 2px;">SKYGRAB</p>
 
@@ -61,7 +61,7 @@
                        <img src="{% static 'icons/airplane.png' %}" height="20px" width="20px" style="margin-bottom: 5px;"> <p style="font-size: 18px;font-weight: bold;display: inline;">&nbsp; Let's on board!</p>
                     </div>
                     <div id="form_div" >
-                        <form method="POST" action="" id="main_form" >
+                        <form method="POST" action="{% url %}" id="main_form" >
                             {% csrf_token %}
                             <label for="first_name">First Name</label>
                             <input name="first_name" type="text" class="form-control" required id="first_name" placeholder="Enter your first name" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
@@ -69,10 +69,16 @@
                             <label for="last_name">Last Name</label>
                             <input name="last_name" type="text" class="form-control" required id="last_name" placeholder="Enter your last name" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
 
+                            <label for="password1">Password</label>
+                            <input name="password1" type="text" class="form-control" required id="password1" placeholder="Enter your password" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+
+                            <label for="password2">Confirm Password</label>
+                            <input name="password2" type="text" class="form-control" required id="password2" placeholder="Confirm your password" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+
                             <label for="phone_number">Phone Number</label>
                             <input name="phone_number" type="number" class="form-control" required id="phone_number" placeholder="Enter your phone number" style="font-size: 14px;    box-shadow: 0 2px 4px rgba(25,34,29,.05);">
                                 <div style="text-align: center;align-items: center;">
-                                    <button class="btn btn-primary" name="reg_btn">Submit</button>
+                                    <button class="btn btn-primary" >Submit</button>
 
                                 </div>
                           

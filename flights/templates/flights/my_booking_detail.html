@@ -1,0 +1,212 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<style>
+    html{
+        height: 100%;
+        width: 100%;
+    }
+    body{
+       
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+        background:#f9f9f9;
+/*prev f4f4f4 */
+        overflow-x: hidden;
+       font-family: 'Poppins', sans-serif;;
+    }
+    label{
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    input{
+        font-size: 20px;
+    }
+
+
+    @media only screen and (min-width: 761px) {
+        #form_div{
+           margin: 20px 20px 7px 20px;
+           
+        }
+
+        #inner_form_section{
+           
+            background: #fff;
+          
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 10px 30px rgba(0,0,0,.05);
+          
+
+        }
+    }
+    
+    input{
+        margin-bottom: 25px;
+    }
+</style>
+
+    <div class="row" style="height: 100%;position: relative;padding: 0px;margin: 0px;">
+        <div style="width: 60%;position: absolute;left: 50%;transform: translateX(-50%);margin-top: 5%;">
+          
+          
+            <div id="inner_form_section" style="padding-top: 20px">
+                    <!-- <div style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;letter-spacing: 2px;display: inline-block;">SKYGRAB</div> -->
+                    <div style="text-align: center;">
+                       <img src="{% static 'icons/airplane.png' %}" height="20px" width="20px" style="margin-bottom: 5px;"> <p style="font-size: 16px;font-weight: bold;display: inline;">&nbsp; Soar on the wings of SkyGrab!</p>
+                    </div>
+                    <div id="form_div" >
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Plane Number </label>
+                                    <input  class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.plane_number }}" readonly>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label>Airlines </label>
+                                <input class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.airlines.name }}" readonly>
+                            
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="source">Source </label>
+                                    <input name="source" id="source" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.source.location }}" readonly>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="destination">Destination </label>
+                                <input name="destination" id="destination" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.destination.location }}" readonly>
+                            
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="departure">Departure </label>
+                                    <input name="departure" id="departure" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.departure }}" readonly>
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="arrival">Arrival </label>
+                                    <input name="arrival" id="arrival" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ booking_obj.flight.arrival }}" readonly>
+        
+                                </div>
+                            </div>
+                            
+                           <div class="row">
+                            <div class="col-md-6">
+                                <label for="seats">No. of Seats </label>
+                           
+                                <input name="seats" id="seats" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{  booking_obj.associated_passengers.all.count }}" readonly>
+    
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fare">Fare </label>
+                            <input name="fare" id="fare" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="Rs. {{ fare }}" readonly>
+
+
+                            </div>
+                           </div>
+                           
+                           {% for passenger in passengers %}
+                           <div class="row">
+                              <div class="col-md-6">
+                                <label>Passenger {{ forloop.counter }}</label>
+                                <input  class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ passenger.first_name }}">
+                              </div>
+                              <div class="col-md-6">
+                                <label></label>
+                                <input class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ passenger.last_name }}" >  
+                              </div>
+                           </div>
+                           <div class="row">
+                            <div class="col-md-6">
+                              <input   class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);"  value="{{ passenger.age }}" >
+                            </div>
+                            <div class="col-md-6">
+                                <input   class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" 
+                                {% if passenger.gender == 1 %} value="Male" {% elif passenger.gender == 2 %} value="Female" {% else %} value="Others" {% endif %}>
+                              </div>
+                            
+                         </div>
+                           {% endfor %}
+                               
+                            
+                        <div style="text-align: center;margin-top: 5px;">
+                        {% if is_cancellation_available %}<!--paid-->
+                         
+                            <form method="POST" action="" id="cancel_form" onsubmit="confirm_cancellation(event)">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" >Cancel</button>
+                            </form>
+                         
+                         {% elif booking_obj.status == 2 %}
+                        
+                         <button class="btn btn-danger" style="font-size: 12px;">Cancelled</button>
+                         <p style="font-size: 9px;margin-top: 4px;">REFUND WILL BE INITIATED WITHIN 5 WORKING DAYS</p>
+                       
+                         {% elif booking_obj.status == 3 %}
+                         
+                         <button class="btn btn-info" style="font-size: 12px;">Refunded</button>
+                        
+                         {% endif %}
+                        </div>
+
+
+                                
+                            
+
+                      
+                       
+                    </div><br>
+                    
+                    
+                    
+            </div>
+           
+            
+
+            
+            
+        </div>
+        
+    </div>
+    <script>
+        function confirm_cancellation(e){
+            e.preventDefault();
+
+            var cancel_form = document.getElementById("cancel_form") 
+            console.log(cancel_form)
+        Swal.fire({
+            title: "<p style='font-size:16px'>Are you sure of cancelling the flight?</p><br><p style='font-size:12px'>Refund will be processed in 5 working days</p>",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes,cancel!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+            }).then((willDelete) => {
+               if (willDelete) {
+                     cancel_form.submit();
+               } 
+        });
+            // function(isConfirm){
+            //     if (isConfirm) {
+            //         cancel_form.submit();         
+            //     } 
+            // }   
+    
+        }
+    </script>
+{% endblock content %}

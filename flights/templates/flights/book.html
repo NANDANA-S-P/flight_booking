@@ -63,6 +63,21 @@
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-md-6">
+                                    <label for="plane_number">Plane Number </label>
+                                    <input name="plane_number" id="plane_number" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.plane_number }}" readonly>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="airlines">Airlines </label>
+                                <input name="airlines" id="airlines" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.airlines.name }}" readonly>
+                            
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
                                     <label for="source">Source </label>
                                     <input name="source" id="source" class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" value="{{ flight_obj.source.location }}" readonly>
 

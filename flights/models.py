@@ -37,18 +37,6 @@ class Flight(models.Model):
     def __str__(self):
         return f"{self.plane_number}-{self.source.code}-{self.destination.code}"
 
-# class SeatType(models.Model):
-#     FIRST=1
-#     BUSINESS=2
-#     ECONOMY=3
-#     SEAT_TYPE=((FIRST,"First"),(BUSINESS,"Business"),(ECONOMY,"Economy"))
-#     flight=models.ForeignKey(Flight,on_delete=models.CASCADE,related_name="flight_seats")
-#     type=models.SmallIntegerField(choices=SEAT_TYPE)
-#     fare=models.IntegerField()
-
-#     def __str__(self):
-#         return f"{self.type}-{self.flight.plane_number}"
-
 class Seat(models.Model):
     AVAILABLE=0
     BOOKED=1
@@ -63,25 +51,29 @@ class Seat(models.Model):
 class Booking(models.Model):
     INITIATED=0
     PAID=1
-    STATUS_CHOICES=((INITIATED,"Initiated"),(PAID,"Paid"))
+    CANCELLED=2
+    REFUNDED=3
+    STATUS_CHOICES=((INITIATED,"Initiated"),(PAID,"Paid"),(CANCELLED,"Cancelled"),(REFUNDED,"Refunded"))
     customer=models.ForeignKey(User,on_delete=models.CASCADE,related_name="associated_bookings")
-    date_time=models.DateTimeField(auto_now_add=True)
+    date_time=models.DateTimeField()
     status=models.IntegerField(choices=STATUS_CHOICES)
     flight=models.ForeignKey(Flight,on_delete=models.SET_NULL,null=True,related_name="related_bookings")
 
     def __str__(self):
-        return f"{self.customer.email}-{self.seat_id}"
+        return f"{self.customer.email}-{self.flight}"
     
 class Passenger(models.Model):
     MALE=1
     FEMALE=2
     OTHERS=3
+    PREFER_NOT_TO_SAY=4
     GENDER_CHOICES=((MALE,"Male"),(FEMALE,"Female"),(OTHERS,"Others"))
     first_name=models.CharField(max_length=200)
     last_name=models.CharField(max_length=200)
-    gender=models.SmallIntegerField(choices=GENDER_CHOICES)
+    gender=models.SmallIntegerField(choices=GENDER_CHOICES,null=True)
     booking=models.ForeignKey(Booking,on_delete=models.CASCADE,related_name="associated_passengers")
     seat_id=models.ForeignKey(Seat,on_delete=models.CASCADE,related_name="related_booking")
+    age=models.SmallIntegerField()
 
     def __str__(self):
         return f"{self.first_name}-{self.seat_id}"

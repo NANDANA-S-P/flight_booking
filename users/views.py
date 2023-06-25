@@ -14,7 +14,9 @@ import math,random
 
 def login(request):
     if request.method=="POST":
-        if 'login_button' in request.POST:
+        print("yessssssss")
+        print(request.POST)
+        if request.POST["submitform"]=="login":
             username=request.POST['email']
             password=request.POST['password']
             # print(email,password,"logininn")
@@ -26,7 +28,7 @@ def login(request):
                 sweetify.warning(request,"<p style='font-size:20px'>Invalid credentials</p>",button="OK")
                 return redirect("login")
 
-        if "register_button" in request.POST:
+        if  request.POST["submitform"]=="register":
             email=request.POST["email"]
             password1=request.POST["password1"]
             password2=request.POST["password2"]
@@ -40,7 +42,7 @@ def login(request):
             user = authenticate(username = email, password = password1)
             auth_login(request, user,backend='django.contrib.auth.backends.ModelBackend')
 
-
+            return redirect("flights")
 
 
             
@@ -56,43 +58,8 @@ def login(request):
     return render(request,"users/new_login.html")
 
 
-# @csrf_exempt
-# def send_otp(request,email):
 
-#     print("yeah reached dude")
-#     # email=request.GET['email']
-#     print(email,"otppppp")
-#     user_obj=User.objects.filter(email=email)
-#     if user_obj:
-#         profile_obj=Profile.objects.filter(user=user_obj[0])
-#         if profile_obj:
-#             sweetify.info(request,"Account already exists with this email!")
-#             return redirect("login")
-    
-    
-    
-        
-        # return 1
 
-def verify(request):
-    profile_obj=Profile.objects.filter(user=request.user)
-    if profile_obj:
-        sweetify.info(request,"Account already exists!")
-        return redirect("login")
-    if request.method=="GET":
-        digits = "0123456789"
-        otp_number = ""
-        for i in range(6) :
-            otp_number += digits[math.floor(random.random() * 10)]
-        existing_otps=OTP.objects.filter(email=request.user.email)
-        if existing_otps:
-            existing_otps.delete()
-        OTP.objects.create(email=request.user.email,otp_number=otp_number)
-        #send mail here
-        print(otp_number)
-    
-
-    return render(request,"users/otp.html")
 
 
 def logout_user(request):
@@ -104,15 +71,6 @@ def details(request):
     if not request.user.is_authenticated:
         return redirect("login")
     if request.method=="POST":
-        if "verify_btn" in request.POST:       
-            otp_obj=OTP.objects.get(email=request.user.email)
-            otp_value=request.POST["otp"]
-            if(otp_value==str(otp_obj.otp_number)):
-                sweetify.success(request,"Account verified!")
-                return redirect("details")
-            else:
-                sweetify.warning(request,"Invalid OTP")
-                return redirect("verify")
         if "reg_btn" in request.POST:
             print("ohhh")
             user=request.user

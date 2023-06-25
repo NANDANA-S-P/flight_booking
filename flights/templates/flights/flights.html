@@ -3,7 +3,8 @@
 {% block content %}
 <style>
     body{
-        background-color: #eeedef;
+        /* background-color: #eeedef; */
+        background-color: #f4f3f3;
         margin: 0px;
         padding: 0px;
         overflow-x: hidden;
@@ -99,14 +100,48 @@
         margin-right: 40px;
 
         }
-        .left_flight{
+        .left_flight {
             width: 100%;
-            
+            background: #fff;
+            padding:2% 4% 1% 4%;
+            border-radius: 5px;
+            margin: 20px 0px 20px 0px;
         }
         .right_flight{
             width: 100%;
-           
+            background: #fff;
+            padding:2% 4% 1% 4%;
+            border-radius: 5px;
+            margin: 20px 0px 20px 0px;
         }
+        .flight_icon{
+            align-items: center;
+            text-align: center;
+        }
+        .departure{
+            display: inline-block;
+            width: 40%;
+        }
+        .arrival{
+           
+            width: 40%;
+            float: right;
+        }
+        .price_comp_1{
+            display: inline-block;
+        }
+        .price_comp_3{
+            display: inline-block;
+        }
+        .price_comp_2{
+            display: inline-block;
+        }
+        .book_btn{
+            margin-bottom: 10px;
+        }
+
+
+       
 
        
         
@@ -118,16 +153,17 @@
         <img src="{% static 'images/logo.png' %}" height="20px" width="120px">
         <div style="float: right;" >
             <div id="mybookings" style="display: inline-block;">
-                <a href="" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
+                <a href="{% url 'my_bookings' %}" style="text-decoration: none; color: #000;font-weight: 500;" title="{{ request.user.email }}">My bookings</a>
             </div>
             <div id="logout" style="display: inline-block;">
-                <a href="{% url 'logout' %}" style="text-decoration: none; color: #000;font-weight: 500;">Logout</a>
+                <a href="{% url 'logout' %}" style="text-decoration: none; color: #000;font-weight: 500;" title="{{ request.user.email }}">Logout</a>
             </div>
         </div>
         
         
         <div class="user_inputs" style="margin-top: 50px;" >
             <div class="row">
+                <div class="col-md-2"></div>
                 <div class="col-md-2 col-sm-12 user_inp">
                     <label for="source">Source</label>
                     <select class="form-control" name="source" id="source" oninput="filter_display()">
@@ -153,24 +189,14 @@
                 </div>
             
                 <div class="col-md-2 col-sm-12 user_inp">
-                    <label for="source">Departure Date</label>
-                    <input type="date" class="form-control" name="departure_date" id="departure"> 
+                    <label for="source">Departure</label>
+                    <input type="date" class="form-control" name="departure_date" id="departure_date" oninput="filter_display()"> 
                 </div>
+                <div class="col-md-2"></div>
 
-                <div class="col-md-2 col-sm-12 user_inp">
-                    <label for="source">Add Round Trip</label>
-                    <input type="date" class="form-control" name="return_date" id="return_date"> 
-                </div>
-                <!-- <div class="col-md-2  col-sm-12 user_inp">
-                    <label for="seat_type">Class</label>
-                    <select class="form-control" name="seat_type" id="seat_type">
-                        
-                        <option>AAA</option>
-                        <option>BBB</option>
-                        <option>CCC</option>
-                    </select>
-                </div> -->
-            
+
+
+              
             </div>
         </div>
        
@@ -178,10 +204,11 @@
     </div><!--end of top bar-->
     
     <div id="bottom_section" style="margin-top: 50px;">
+        <p style="font-size: 14px;text-align: center;display: none;"  id="no_flights">Sorry, no flights!</p>
         {% for flight in flights %}
         {% if not forloop.counter|divisibleby:2  %}
         <div class="left_flight flight_info" style="position: relative;display: none;" data-src="{{ flight.flight_det.source.code }}" data-dst="{{ flight.flight_det.destination.code }}"
-         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure }}" data-arrival="{{ flight.flight_det.arrival }}">
+         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure.date }}">
             <div class="flight_icon">
                 <img src="{{ flight.flight_det.airlines.logo.url }}" height="40px" width="40px">
                 <div class="flight_names">
@@ -200,17 +227,17 @@
                 <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;"> {{ flight.flight_det.destination.location }}</p>
             </div>
             <div class="price" style="text-align: center;">
-                <p style="color: #828282;font-size: 11px;text-transform: uppercase;">Price</p>
-                <p style="font-weight: bold;">Rs.{{ flight.flight_det.fare }}</p>
-                <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+                <p style="color: #828282;font-size: 11px;text-transform: uppercase;" class="price_comp_1">Price</p>
+                <p style="font-weight: bold;" class="price_comp_2">Rs.{{ flight.flight_det.fare }}</p>
+                <p style="color: #b1b1b1;font-size: 12px;" class="price_comp_3">per seat</p>
             </div>
-            <div class="book_btn">
+            <div class="book_btn" style="text-align: center;">
                 <form id="form_{{ forloop.counter }}" method="POST" action="{% url 'book' %}">
                     {% csrf_token %}
                     <input type="hidden" value="{{ flight.flight_det.id }}" style="display: none;" name="flight_id">
                    
                     <input type="hidden" style="display: none;" id="f_seats_{{ forloop.counter }}" name="f_seats">
-                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/book.svg' %}" height="25px" width="25px"></a>
                 </form>
                
             </div>
@@ -219,7 +246,7 @@
         {% else %}
                    
         <div class="right_flight flight_info" style="position: relative;display: none;"   data-src="{{ flight.flight_det.source.code }}" data-dst="{{ flight.flight_det.destination.code }}"
-         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure }}" data-arrival="{{ flight.flight_det.arrival }}">
+         data-avl="{{ flight.seats }}" data-departure="{{ flight.flight_det.departure.date }}" data-arrival="{{ flight.flight_det.arrival }}">
             <div class="flight_icon">
                 <img src="{{ flight.flight_det.airlines.logo.url }}" height="40px" width="40px">
                 <div class="flight_names">
@@ -239,9 +266,9 @@
                 <p class="arrival_loc" style="color: #b1b1b1;font-size: 12px;"> {{ flight.flight_det.destination.location }}</p>
             </div>
             <div class="price" style="text-align: center;">
-                <p style="color: #828282;font-size: 11px;text-transform: uppercase;">Price</p>
-                <p style="font-weight: bold;">Rs.{{ flight.flight_det.fare }}</p>
-                <p style="color: #b1b1b1;font-size: 12px;">per seat</p>
+                <p style="color: #828282;font-size: 11px;text-transform: uppercase;" class="price_comp_1">Price</p>
+                <p style="font-weight: bold;" class="price_comp_2">Rs.{{ flight.flight_det.fare }}</p>
+                <p style="color: #b1b1b1;font-size: 12px;" class="price_comp_3">per seat</p>
             </div>
             <div class="book_btn" style="text-align: center;">
                 <form id="form_{{ forloop.counter }}" method="POST" action="{% url 'book' %}">
@@ -249,7 +276,7 @@
                     <input type="hidden" value="{{ flight.flight_det.id }}" style="display: none;" name="flight_id">
                    
                     <input type="hidden" style="display: none;" id="f_seats_{{ forloop.counter }}" name="f_seats">
-                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/plane-departure.svg' %}" height="25px" width="25px"></a>
+                    <a onclick="submit_form({{ forloop.counter }})"><img src="{% static 'icons/book.svg' %}" height="25px" width="25px"></a>
                 </form>
             </div>
             
@@ -269,7 +296,6 @@
 </div>
 <script>
     window.addEventListener("load", (event) => {
-        // filter_flights("{{ req_flight_obj.source }}","{{ req_flight_obj.destination }}","{{ req_flight_obj.seats }}")
         filter_flights("default","default","1")
     });
 
@@ -278,24 +304,50 @@
         source=document.getElementById("source").value
         destination=document.getElementById("destination").value
         seats=document.getElementById("seats").value
-        filter_flights(source,destination,seats)
+        departure_date=document.getElementById("departure_date").value
+        console.log("^^^^^"+departure_date)
+        var user_date=new Date()
+        if(departure_date && departure_date!=undefined){
+            console.log("haaaaaaaaaaaan")
+        var year=departure_date.substring(0,4)
+        var month=departure_date.substring(5,7)
+        var date_val=departure_date.substring(8,10)
+        user_date = new Date (parseInt(year), parseInt(month)-1, parseInt(date_val));
+        }
+        else{
+            console.log("noooooooooooooooo")
+            user_date="default"
+        }
+        // console.log(user_date)
+       
+       
+        
+
+        filter_flights(source,destination,seats,user_date)
     }
     var toggler=0;
-    function filter_flights(source,destination,seats){
+    function filter_flights(source,destination,seats,user_date){
         console.log("exec filter flight")
         flight_infos=document.getElementsByClassName('flight_info');
         for(var i=0;i<flight_infos.length;i++){
             flight_infos[i].style.display='none';
         }
         toggler=0
+        document.getElementById("no_flights").style.display="none";
+
         for(var i=0;i<flight_infos.length;i++){
-            // console.log("selected ",source)
-            // console.log("destination ",destination)
-            console.log(flight_infos[i].getAttribute('data-departure')+"--"+seats);
-            // console.log(flight_infos[i].getAttribute('data-dst')+"--"+destination);
             if(flight_infos[i].getAttribute('data-src')==source || (source=="default")){
                 if(flight_infos[i].getAttribute('data-dst')==destination || (destination=="default")){
                     if(flight_infos[i].getAttribute('data-avl')>=seats || seats=="1"){
+
+                        console.log("outerrrrr")
+                        // date logic
+                        var curr_date=new Date(flight_infos[i].getAttribute('data-departure'))
+                        console.log("comparing")
+                       
+                        if(user_date=="default" || user_date==undefined || Number(user_date) == Number(curr_date)){
+
+                            console.log("iffffffffff")
                         if(toggler%2==0){
                             flight_infos[i].classList.remove("right_flight")
                             flight_infos[i].classList.add("left_flight")
@@ -308,22 +360,29 @@
                             flight_infos[i].style.display='block';
                             toggler+=1;
                         }
+                        
+                        }
+                        else{
+                            console.log("elseeeeee")
+                        }
                     }
                 
                  }
             }
 
         }
+        if(toggler==0){
+            document.getElementById("no_flights").style.display="block";
+        }
 
     }
 </script>
 <script>
     function submit_form(form_counter){
-        console.log(document.getElementById("seats").value)
+        // console.log(document.getElementById("seats").value)
         required_form_id=`form_${form_counter}`
         seats=document.getElementById("seats").value
         seats_id=`f_seats_${form_counter}`
-        console.log("finding "+seats_id)
         document.getElementById(seats_id).value=seats
         required_form=document.getElementById(required_form_id)
         required_form.submit();

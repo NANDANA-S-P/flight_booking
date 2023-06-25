@@ -1,17 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="{% url 'pay_test' %}" method="POST">
-        {% csrf_token %}
-        <input value="{{ booking_id }}" name="booking_id">
-        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Payment Gateway" data-amount="1" data-locale="auto" data-book="{{ booking_id }}"></script>
+{% extends 'users/base.html' %}
 
-    </form>
-</body>
-
-</html>
+{% block content%}
+<style>
+     body{
+       
+       height: 100%;
+       width: 100%;
+       padding: 0px;
+       background:#f9f9f9;
+       overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;;
+   }
+</style>
+    <div style="width: 400px; background: #fff; height: 200px;padding: 20px;margin-top: 40px; position: absolute; left: 50%;transform: translateX(-50%);align-items: center;text-align: center;">
+        <p style="margin-top: 50px;">Are you sure of proceeding to payment?</p>
+        <form action="{% url 'pay_test' %}" method="POST" style="align-items: center;text-align: center;">
+            {% csrf_token %}
+            <input value="{{ booking_id }}" name="booking_id" type="hidden">
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Payment Gateway" data-amount="{{ fare }}" data-locale="auto"></script>
+    
+        </form>
+    </div>
+    
+{% endblock %}

@@ -7,13 +7,8 @@ class Profile(models.Model):
     last_name=models.CharField(max_length=200)
     phone_number=models.BigIntegerField()
     user=models.OneToOneField(User,related_name="profile",on_delete=models.CASCADE)
+    is_admin=models.BooleanField(default=False)
 
     def __str__(self):
         return self.first_name
     
-class OTP(models.Model):
-    email=models.EmailField()
-    otp_number=models.IntegerField()
-
-    def __str__(self):
-        return f"{self.email}-{self.otp_number}"

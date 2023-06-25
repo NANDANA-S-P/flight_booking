@@ -1,12 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from flights. models import Airline,Airport,Flight,Seat
+from django.contrib.auth.decorators import login_required
+
 import sweetify
 from datetime import datetime
 # Create your views here.
-def dashboard(request):
-    return render(request,"dashboard/main.html")
+# @login_required
+# def dashboard(request):
+#     return render(request,"dashboard/main.html")
 
+@login_required
 def airports(request):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
     airports=Airport.objects.all()
     if request.method=="POST":
         code=request.POST["code"]
@@ -15,7 +22,11 @@ def airports(request):
         sweetify.success(request,"Airport added successfully!",button="OK")
     return render(request,"dashboard/airports.html",{"is_airports_active":True,"airports":airports})
 
+@login_required
 def airlines(request):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
     airlines=Airline.objects.all()
     if request.method=="POST":
         name=request.POST["name"]
@@ -25,7 +36,11 @@ def airlines(request):
    
     return render(request,"dashboard/airlines.html",{'airlines':airlines,'is_airlines_active':True})
 
+@login_required
 def dashboard_flights(request):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
     places=Airport.objects.all()
     airlines=Airline.objects.all()
     if request.method=="POST":
@@ -36,10 +51,6 @@ def dashboard_flights(request):
         departure=request.POST["departure"]
         arrival=request.POST["arrival"]
         fare=request.POST["fare"]
-        # business_class_fare=request.POST["business"]
-        # economy_class_fare=request.POST["economy"]
-        # first_class_fare=request.POST["first"]
-
         airline=Airline.objects.get(id=airline_id)
         source=Airport.objects.get(id=source_id)
         destination=Airport.objects.get(id=destination_id)
@@ -49,17 +60,8 @@ def dashboard_flights(request):
        
 
         flight_obj=Flight.objects.create(plane_number=plane_number,airlines=airline,source=source,destination=destination,departure=departure,arrival=arrival,is_booking_open=is_booking_open,added_by=request.user,fare=fare)
-        # first_class_type=SeatType.objects.create(flight=flight_obj,type=SeatType.FIRST,fare=first_class_fare)
-        # business_class_type=SeatType.objects.create(flight=flight_obj,type=SeatType.BUSINESS,fare=business_class_fare)
-        # economy_class_type=SeatType.objects.create(flight=flight_obj,type=SeatType.ECONOMY,fare=economy_class_fare)
         for i in range(1,61):
             seat_code=plane_number+"-"+str(i)
             Seat.objects.create(code=seat_code,flight=flight_obj)
-        # for i in range(11,36):
-        #     seat_code=plane_number+"-"+str(i)
-        #     Seat.objects.create(code=seat_code,type=business_class_type)
-        # for i in range(36,61):
-        #     seat_code=plane_number+"-"+str(i)
-        #     Seat.objects.create(code=seat_code,type=economy_class_type)
-
+       
     return render(request,"dashboard/dashboard_flights.html",{"places":places,"airlines":airlines,"is_flights_active":True})

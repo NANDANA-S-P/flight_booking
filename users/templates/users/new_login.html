@@ -33,7 +33,6 @@
         }
 
         #inner_form_section{
-           
             background: #fff;
           
             border-radius: 10px;
@@ -79,22 +78,23 @@
                             
                             <div class="signup_fields" style="display: none;">
                                 <label for="password1 " >PASSWORD</label>
-                                <input name="password1" class="form-control" id="password1" placeholder="Enter password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
-                                
+                                <p style="font-size: 10px;margin-bottom: 2px;">Atleast 8 characters, 1 upper, lower, numeric, special character</p>
+
+                                <input name="password1" class="form-control" id="password1" placeholder="Enter password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);" type="password">
                                 <label for="password2" >CONFIRM PASSWORD</label>
-                                <input name="password2" class="form-control" id="password1" placeholder="Confirm password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                                <input name="password2" class="form-control" id="password2" type="password" placeholder="Confirm password" style="font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
                                 
                             </div>
                            
                             <label for="otp" id="otp_label" style="display: none;" >OTP</label>
                             <input name="otp" type="number" class="form-control" id="otp" placeholder="Enter code here" style="display: none; font-size: 14px;     box-shadow: 0 2px 4px rgba(25,34,29,.05);">
+                            
+                            
+                            <button class="btn btn-primary login_fields" name="login_button" id="login_button" style="width: 180px;" type="submit" onclick="login_page(event)">Login</button>
 
-                            <button class="btn btn-primary login_fields" name="login_button" id="login_button" style="width: 180px;" type="submit">Login</button>
-                            <p style="width: 180px;display: inline;font-size: 13px;margin-left: 10px;" id="forgot_password" class="login_fields"><a>Forgot password?</a></p>
-
-                            <!-- <button class="btn btn-primary " id="otp_button" name="otp_button"  style="display: none;" onclick="send_otp(event)">Send OTP</button> -->
-                            <button class="btn btn-primary signup_fields " id="register_button" name="register_button"  style="display: none;" >Register</button>
-                            <!-- <button class="btn btn-primary" id="verify_otp_button" name="verify_otp_button"  style="display: none;">Verify OTP</button> -->
+                            <input type="hidden" id="submitform" name="submitform" value="login" >
+                            <button class="btn btn-primary signup_fields " id="register_button" name="register_button"  style="display: none;" onclick="register_page(event)" >Register</button>
+                           
                             
 
                         </form>
@@ -129,14 +129,53 @@
         toggle_signup()
     });
 
+    function login_page(e){
+        e.preventDefault()
+        var password=document.getElementById("password").value
+        var email=document.getElementById("email").value
+        if(email.trim()==""){
+            Swal.fire({title: 'Error!',text: 'Email is required!',icon: 'warning',confirmButtonText: 'OK'})
+        }
+        else if(password==""){
+            Swal.fire({title: 'Error!',text: 'Password is required!',icon: 'warning',confirmButtonText: 'OK'})
+        }
+        else{
+            document.getElementById("submitform").value="login";
+            document.getElementById("main_form").submit()
+
+        }
+    }
+
+    function register_page(e){
+        e.preventDefault()
+        var email=document.getElementById("email")
+        var password1=document.getElementById("password1")
+        var password2=document.getElementById("password2")
+        if(email.value.trim()==""){
+            Swal.fire({title: 'Error!',text: 'Email is required!',icon: 'warning',confirmButtonText: 'OK'})
+        }
+        else if(password1.value.length < 8) {
+
+            Swal.fire({title: 'Error!',text: 'Passwords should contain atleast 8 characters!',icon: 'warning',confirmButtonText: 'OK'})
+        }
+        else if( ( !(/[A-Z]/.test(password1.value)) || !(/[a-z]/.test(password1.value)) ||  !(/[0-9]/.test(password1.value)) ||  !(/[!@#$%^&*()]/.test(password1.value)))){
+        Swal.fire({title: 'Error!',text: 'Enter valid password!',icon: 'warning',confirmButtonText: 'OK'})
+
+        }
+
+        else if(password1.value!=password2.value){
+        Swal.fire({title: 'Error!',text: 'Passwords do not match!',icon: 'warning',confirmButtonText: 'OK'})
+
+        }
+        
+        else{
+            document.getElementById("submitform").value="register";
+            document.getElementById("main_form").submit()
+
+        }
+    }
+
     function toggle_login(){
-        // document.getElementById("otp_label").style.display='none';
-        // document.getElementById("otp_button").style.display='none';
-        // document.getElementById("otp").style.display='none';
-        // document.getElementById("login_button").style.display="block";
-        // document.getElementById("forgot_password").style.display="block";
-        // document.getElementById("password").style.display="block";
-        // document.getElementById("password_label").style.display="block";
         var signup_fields=document.getElementsByClassName("signup_fields");
         for(var i=0;i<signup_fields.length;i++){
             signup_fields[i].style.display='none';
@@ -153,6 +192,7 @@
         var signup_fields=document.getElementsByClassName("signup_fields");
         for(var i=0;i<signup_fields.length;i++){
             signup_fields[i].style.display='block';
+            
         }
         var login_fields=document.getElementsByClassName("login_fields");
         for(var i=0;i<login_fields.length;i++){
@@ -162,21 +202,7 @@
 
     
 
-   async function send_otp(e){
-    e.preventDefault();
-    var email=document.getElementById("email").value
-    const response = await fetch(`/users/send_otp/${email}`);
-    // const json_response = await response.json();
-    console.log(response)
-    if(response.status=="200"){
-        document.getElementById("otp").style.display='block';
-        document.getElementById("otp_label").style.display='block';
-        document.getElementById("verify_otp_button").style.display='block';
-        document.getElementById("otp_button").style.display='none';
-
-    }
-
-    }
+ 
     
 </script>
 {% endblock script_references%}

@@ -118,7 +118,7 @@
         <img src="{% static 'images/logo.png' %}" height="20px" width="120px">
         <div style="float: right;" >
             <div id="mybookings" style="display: inline-block;">
-                <a href="" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
+                <a href="{% url 'my_bookings' %}" style="text-decoration: none; color: #000;font-weight: 500;">My bookings</a>
             </div>
             <div id="logout" style="display: inline-block;">
                 <a href="{% url 'logout' %}" style="text-decoration: none; color: #000;font-weight: 500;">Logout</a>

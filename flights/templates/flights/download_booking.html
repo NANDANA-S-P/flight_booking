@@ -1,0 +1,55 @@
+
+  
+    <!--roboto font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+     <!--fonts-->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    
+
+    <div style="padding: 20px;">
+        <div style="text-align: center;">
+            <p style="font-weight: bold;font-size: 30px;font-family: 'Poppins', sans-serif;letter-spacing: 2px;">SKYGRAB</p>
+    
+        </div>
+        <hr>
+        {% for passenger in passengers %}
+
+                <span style="font-weight: bold;width: 50px;">Passenger Name :</span>
+                <span> {{ passenger.first_name }} {{ passenger.last_name }}</span>
+            <br><br>
+            <span style="font-weight: bold;">Seat ID : </span><span>{{ passenger.seat_id }}</span>
+             
+        {% endfor %}
+              
+           
+        <hr>
+        <span style="font-weight: bold;font-size: 20 px;">Plane Details</span><br><br><br>
+                <span style="font-weight: bold;">Plane Number : </span><span> {{ booking.flight.plane_number }}</span>
+                <br><br>
+                <span style="font-weight: bold;">Booking Date :</span>
+                <span>{{ booking.date_time }}</span>
+                <br><br>
+                <span style="font-weight: bold;">Source : </span><span>{{ booking.flight.source.location }}</span>
+                <br><br>
+                <span style="font-weight: bold;">Destination : </span><span>{{ booking.flight.destination.location }}</span>
+
+                <br><br>
+                <span style="font-weight: bold;">Departure : </span><span>{{ booking.flight.departure }}</span>
+                <br><br>
+                <span style="font-weight: bold;">Arrival : </span><span>{{ booking.flight.arrival }}</span>
+            
+               
+              
+            </div>
+           
+       
+        <hr>
+        
+      
+  

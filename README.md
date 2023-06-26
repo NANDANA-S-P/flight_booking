@@ -1,4 +1,4 @@
-# flight_booking
+**FLIGHT TICKET BOOKING**<br>
 A web-based Flight Ticket Booking System developed using Django, HTML, CSS, Javascript, Bootstrap.
 
 **Features:**
@@ -9,16 +9,17 @@ A web-based Flight Ticket Booking System developed using Django, HTML, CSS, Java
 5. Admins can add airlines and airports
 6. Admins can add flights details
 
+Demo Video : https://1drv.ms/v/s!AtAoVJDZIfpSgw9sWKGnfiFG5dBv?e=eudte3<br>
 Checkout here : https://nandanasp6.pythonanywhere.com/
 
-**Dashboard Credentials :**
-Username : admin@gmail.com
+**Dashboard Credentials :**<br>
+Username : admin@gmail.com<br>
 Password : Hello@123
 
-**Card Payment Credentials:**
-Visa : 4242424242424242
-Mastercard : 5555555555554444
-CVC : Any 3 digits
+**Card Payment Credentials:**<br>
+Visa : 4242424242424242<br>
+Mastercard : 5555555555554444<br>
+CVC : Any 3 digits<br>
 Date : Any future date
 
 

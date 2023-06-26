@@ -17,39 +17,44 @@
             <p style="font-weight: bold;font-size: 30px;font-family: 'Poppins', sans-serif;letter-spacing: 2px;">SKYGRAB</p>
     
         </div>
-        <hr>
-        {% for passenger in passengers %}
-
-                <span style="font-weight: bold;width: 50px;">Passenger Name :</span>
-                <span> {{ passenger.first_name }} {{ passenger.last_name }}</span>
-            <br><br>
-            <span style="font-weight: bold;">Seat ID : </span><span>{{ passenger.seat_id }}</span>
-             
-        {% endfor %}
+       
               
-           
-        <hr>
+      
         <span style="font-weight: bold;font-size: 20 px;">Plane Details</span><br><br><br>
-                <span style="font-weight: bold;">Plane Number : </span><span> {{ booking.flight.plane_number }}</span>
-                <br><br>
-                <span style="font-weight: bold;">Booking Date :</span>
-                <span>{{ booking.date_time }}</span>
-                <br><br>
-                <span style="font-weight: bold;">Source : </span><span>{{ booking.flight.source.location }}</span>
-                <br><br>
-                <span style="font-weight: bold;">Destination : </span><span>{{ booking.flight.destination.location }}</span>
 
-                <br><br>
-                <span style="font-weight: bold;">Departure : </span><span>{{ booking.flight.departure }}</span>
-                <br><br>
-                <span style="font-weight: bold;">Arrival : </span><span>{{ booking.flight.arrival }}</span>
+        <span style="font-weight: bold;">Plane Number : </span><span> {{ booking.flight.plane_number }}</span>
+        <br><br>
+        <span style="font-weight: bold;">Booking Date :</span>
+        <span>{{ booking.date_time }}</span>
+        <br><br>
+        <span style="font-weight: bold;">Source : </span><span>{{ booking.flight.source.location }}</span>
+        <br><br>
+        <span style="font-weight: bold;">Destination : </span><span>{{ booking.flight.destination.location }}</span>
+
+        <br><br>
+        <span style="font-weight: bold;">Departure : </span><span>{{ booking.flight.departure }}</span>
+        <br><br>
+        <span style="font-weight: bold;">Arrival : </span><span>{{ booking.flight.arrival }}</span>
             
-               
-              
+               <br>
+               <hr>
+               <br>
+
+              <span style="font-weight: bold;font-size: 20 px;">Passenger Details</span><br><br><br>
+            {% for passenger in passengers %}
+            <span style="font-weight: bold;">Passenger Name : </span><span> {{ passenger.0 }}</span>
+            <br><br>
+           
+            <span style="font-weight: bold;">Seat code : </span><span>{{ passenger.1 }}</span>
+            <br><br>
+            {% endfor %}
+        
+
             </div>
            
        
         <hr>
+
         
       
   

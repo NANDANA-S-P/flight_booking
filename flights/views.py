@@ -39,7 +39,7 @@ def flights(request):
         return redirect("login")
     
 
-@login_required()
+@login_required
 def book(request):
     if request.method=="POST":
         print(request.POST)
@@ -134,12 +134,25 @@ def download_booking(request,booking_id):
     response['Content-Disposition'] = 'attachment; filename={}'.format(file_name)
     template = get_template(template_path)
     all_passengers=[]
+    
     for p in booking_obj.associated_passengers.all():
-        all_passengers.append(p)
+        each_passenger=[]
+        each_passenger.append(str(p.first_name+" "+p.last_name))
+        each_passenger.append(p.seat_id.code)
+        all_passengers.append(each_passenger)
+       
+      
+    print("...")
+    print(all_passengers)
+    # seat_ids=all_passengers[0].seat_id.code+" to "+all_passengers[-1].seat_id.code
+    # print(seat_ids)
     context = {
+
+
        
         "booking":booking_obj,
-        "passenger":all_passengers
+        "passengers":all_passengers,
+        "kk":[1,2,3,4,5,6]
 
     }
     print(all_passengers)

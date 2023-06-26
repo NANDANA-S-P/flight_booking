@@ -57,6 +57,7 @@
                     <!-- <div style="font-weight: 900;font-size: 30px;font-family: 'Poppins', sans-serif;letter-spacing: 2px;display: inline-block;">SKYGRAB</div> -->
                     <div style="text-align: center;">
                        <img src="{% static 'icons/airplane.png' %}" height="20px" width="20px" style="margin-bottom: 5px;"> <p style="font-size: 16px;font-weight: bold;display: inline;">&nbsp; Soar on the wings of SkyGrab!</p>
+                       <a href="{% url 'download_booking' booking_obj.id %}" style="float: right; margin-right: 20px;">Download</a>
                     </div>
                     <div id="form_div" >
                             
@@ -131,7 +132,7 @@
                            </div>
                            <div class="row">
                             <div class="col-md-6">
-                              <input   class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);"  value="{{ passenger.age }}" >
+                              <input   class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);"  value="{{ passenger.age }} years" >
                             </div>
                             <div class="col-md-6">
                                 <input   class="form-control" style="font-size: 14px;box-shadow: 0 2px 4px rgba(25,34,29,.05);" 

@@ -18,6 +18,9 @@
         #mybookings{
             margin-right: 25px;
         }
+        #dashboard{
+            margin-right: 25px;
+        }
         #logout{
             margin-right: 30px;
         }
@@ -139,6 +142,16 @@
         .book_btn{
             margin-bottom: 10px;
         }
+        #nav_parts{
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        #dashboard{
+            margin-right: 4px;
+        }
+        #mybookings{
+            margin-right: 4px;
+        }
 
 
        
@@ -151,7 +164,12 @@
 <div style="background-color: #eeedef; ">
     <div style="background-color: #fff;padding-top: 25px;padding-left: 35px; padding-right: 35px; width: 100%; padding-bottom: 40px;" id="top-bar">
         <img src="{% static 'images/logo.png' %}" height="20px" width="120px">
-        <div style="float: right;" >
+        <div style="float: right;" id="nav_parts" >
+            {% if request.user.profile.is_admin %}
+            <div id="dashboard" style="display: inline-block;">
+                <a href="{% url 'dashboard_flights' %}" style="text-decoration: none; color: #000;font-weight: 500;">Dashboard</a>
+            </div>
+            {% endif %}
             <div id="mybookings" style="display: inline-block;">
                 <a href="{% url 'my_bookings' %}" style="text-decoration: none; color: #000;font-weight: 500;" title="{{ request.user.email }}">My bookings</a>
             </div>

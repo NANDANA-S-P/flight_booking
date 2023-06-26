@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from flights. models import Airline,Airport,Flight,Seat
+from flights. models import Airline,Airport,Flight,Seat,Booking,Passenger
 from django.contrib.auth.decorators import login_required
 
 import sweetify
@@ -38,11 +38,13 @@ def airlines(request):
 
 @login_required
 def dashboard_flights(request):
+    
     if not request.user.profile.is_admin:
         sweetify.warning(request,"Invalid access",button="OK")
         return redirect("flights")
     places=Airport.objects.all()
     airlines=Airline.objects.all()
+    flights=Flight.objects.all()
     if request.method=="POST":
         plane_number=request.POST["plane_number"]
         airline_id=request.POST["airlines"]
@@ -63,5 +65,33 @@ def dashboard_flights(request):
         for i in range(1,61):
             seat_code=plane_number+"-"+str(i)
             Seat.objects.create(code=seat_code,flight=flight_obj)
+        sweetify.success(request,"Flight added!",button="OK")
        
-    return render(request,"dashboard/dashboard_flights.html",{"places":places,"airlines":airlines,"is_flights_active":True})
+    return render(request,"dashboard/dashboard_flights.html",{"places":places,"airlines":airlines,"is_flights_active":True,"flights":flights})
+
+
+@login_required
+def bookings(request):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
+    flights=Flight.objects.all()
+    return render(request,"dashboard/bookings.html",{"is_bookings_active":True,"flights":flights})
+
+@login_required
+def booking_detail(request,flight_id):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
+    flight_obj=Flight.objects.get(id=flight_id)
+    bookings=Booking.objects.filter(flight=flight_obj)
+    return render(request,"dashboard/booking_detail.html",{"is_bookings_active":True,"bookings":bookings})
+
+@login_required
+def passenger_details(request,booking_id):
+    if not request.user.profile.is_admin:
+        sweetify.warning(request,"Invalid access",button="OK")
+        return redirect("flights")
+    booking_obj=Booking.objects.get(id=booking_id)
+    passengers=Passenger.objects.filter(booking=booking_obj)
+    return render(request,"dashboard/passenger_details.html",{"is_bookings_active":True,"passengers":passengers})

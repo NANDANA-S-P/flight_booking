@@ -88,6 +88,46 @@
 </div>
 
 
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;margin-top: 20px;">
+    <p style="font-size: 20px; font-weight: bold;font-family: 'Montserrat', sans-serif">List of Flights</p>
+    <div style="overflow: auto;">
+        <table id="airlinetable" class="table table-bordered" >
+            <thead>
+
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Plane</th>
+                 
+                  <th scope="col">Source</th>
+                  <th scope="col">Destination</th>
+                  <th scope="col">Departure</th>
+                  <th scopr="col">Arrival</th>
+                  <th scope="col">Fare</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for flight in flights %}
+               <tr style="color: red !important;">
+                <td>{{ forloop.counter }}</td>
+                    <td>{{ flight.plane_number }}<br>{{ flight.airlines.location }}</td>
+                    <td>{{ flight.source.location }}</td>
+                    <td>{{ flight.destination.location }}</td>
+                    <td>{{ flight.departure }}</td>
+                    <td>{{ flight.arrival }}</td>
+                    <td>{{ flight.fare }}</td>
+               </tr>
+        
+                {% endfor %}
+              </tbody>
+             
+            </table>
+      
+    </div>
+
+    
+</div>
+
+
  <!--jquery-->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>

@@ -1,0 +1,77 @@
+{% extends 'dashboard/main.html' %}
+{% block content %}
+<style>
+    input ,select{
+        margin-bottom: 25px;
+    }
+    .dataTables_info {
+        font-size: 12px;
+    }
+    .page-link{
+        font-size: 12px;
+    }
+    
+    @media only screen and (max-width: 760px) {
+        .outer_table_container{
+            overflow: auto;
+        }
+    }
+</style>
+
+
+<div style="background: #fff;box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);padding: 20px;border-radius: 5px;margin-top: 20px;">
+    <p style="font-size: 20px; font-weight: bold;font-family: 'Montserrat', sans-serif">Passengers</p>
+    <div style="overflow: auto;">
+        <table id="airlinetable" class="table table-bordered" >
+            <thead>
+
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Name</th>                
+                  <th scope="col">Gender</th>
+                  <th scope="col">Age</th>
+                  <th scope="col">Seat ID</th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                {% for passenger in passengers %}
+               <tr style="color: red !important;">
+                <td>{{ forloop.counter }}</td>
+                    <td>{{ passenger.first_name }} {{ passenger.last_name }}</td>
+                    <td>
+                    {% if passenger.gender == 1 %}Male
+                    {% elif passenger.gender == 2 %}Female 
+                    {% elif passenger.gender == 3 %}Others 
+                    {% else %}Prefer not to say
+                    {% endif %}
+
+                
+                </td>
+                    <td>{{ passenger.age }}</td>
+                    <td>{{ passenger.seat_id.code }}</td>
+                   
+               </tr>
+        
+                {% endfor %}
+              </tbody>
+             
+            </table>
+      
+    </div>
+
+    
+</div>
+
+
+ <!--jquery-->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"/>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    
+    let table = new DataTable('#airlinetable');
+</script>
+
+{% endblock content %}

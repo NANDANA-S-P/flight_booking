@@ -71,7 +71,7 @@ def confirm_booking(request):
             try:
                 gender=request.POST[f"gender_{i}"]
             except:
-                gender=3
+                gender=4
             age=request.POST[f"age_{i}"]
             seat_objs=Seat.objects.filter(flight=flight_obj,status=Seat.AVAILABLE)
             seat_obj=seat_objs[0]
